@@ -10,8 +10,25 @@ async function call_rust_backend()
 }
 */
 
+export async function load_notes() {
+    let notes = await invoke("load_notes");
+    console.log(notes)
+}
+
 
 window.addEventListener("DOMContentLoaded", () => {
+
+    document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+    }, false);
+
+    document.addEventListener("keydown", ev =>
+    {
+        /*if(ev.keyCode === 123)
+            ev.preventDefault();
+    */
+    });
+
     console.log('DOMContent was successfully loaded!');
     /*
     b_launch = document.querySelector("#b_open_in");

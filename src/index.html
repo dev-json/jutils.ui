@@ -1,9 +1,42 @@
-<html>
+<html lang="de">
     <head>
         <script type="module" src="./preload.js"></script>
-        <script type="module" src="./main.js" defer></script>
+        <script type="module" src="./main.js"></script>
+        <link href="./assets/main.css" type="text/css" rel="stylesheet">
+        <link href="./assets/dark_theme.css" type="text/css" rel="stylesheet">
+
+        <title>jutils.ui</title>
     </head>
     <body>
-        
+        <div class="content-pane">
+            <div class="note-list">
+                <div class="list">
+                    <ol class="notes">
+                        <script type="module">
+                            import { load_notes } from './main.js';
+
+                            document.addEventListener("DOMContentLoaded", async () => {
+                                await load_notes();
+                            });
+                        </script>
+                    </ol>
+                </div>
+                <div class="options">
+                    <button>create</button>
+                    <button>save</button>
+                    <button>delete</button>
+                </div>
+            </div>
+            <div class="note-content">
+
+            </div>
+            <!--<div class="task-selection">
+                <ul class="task-u-list">
+                    <li><a href="#">Notes</a></li>
+                    <li><a href="#">Handlers</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </div>-->
+        </div>
     </body>
 </html>

@@ -1,0 +1,5 @@
+@import url(main.css);
+
+.content-pane .darkmode{
+    background-color: var(--background-color);
+}

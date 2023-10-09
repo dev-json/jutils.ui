@@ -49,7 +49,11 @@ impl Database
         }
         let connection: Connection = open(DB_PATH).unwrap();
         match connection.execute(query) {
-            Ok(_) => 1,
+            Ok(_) =>
+                {
+                    println!("{} rows updated", self.get_rows_updated());
+                    1
+                }
             Err(_) => 0,
         }
     }
@@ -73,6 +77,8 @@ impl Database
             true
         });
 
+        println!("{} overall rows updated", self.get_rows_updated());
+        self.use_batch(false);
         self.rows_updated
     }
 
