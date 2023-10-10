@@ -8,7 +8,9 @@ use std::path::PathBuf;
 use rand::Rng;
 use dirs;
 use crate::db::Database;
-use crate::notes::loader::Loader;
+use crate::notes::loader::*;
+use crate::notes::loader::load_notes as load_notes_offset;
+use crate::notes::note::*;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -23,8 +25,6 @@ fn randommessage() -> String {
 }
 
 fn main() {
-
-
     let default_path: String = {
         let user_home = match dirs::home_dir() {
             Some(path) => Some(path.to_string_lossy().into_owned()),
@@ -42,7 +42,6 @@ fn main() {
     let mut database_ins: Database = Database::new(default_path + "\\data.db");
 
     let loader = Loader::new();
-    loader.load_notes();
 
     database_ins.use_batch(true);
     database_ins.execute(String::from("CREATE TABLE u_settings(id VARCHAR(255) NOT NULL, value VARCHAR(255), PRIMARY KEY (id));").as_str());
@@ -54,9 +53,16 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             greet,
-            randommessage
+            randommessage,
+            load_notes
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 
+}
+
+#[tauri::command]
+fn load_notes(offset: i32) -> String {
+    load_notes_offset(offset, 100);
+    "".to_string()
 }

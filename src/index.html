@@ -14,10 +14,13 @@
                     <ol class="notes">
                         <script type="module">
                             import { load_notes } from './main.js';
-
+                            let note_list;
                             document.addEventListener("DOMContentLoaded", async () => {
-                                await load_notes();
+                                note_list = await load_notes(100);
                             });
+                            document.getElementsByClassName("notes")[0].append(
+                                "<li><a>{note_list}</a></li>"
+                            )
                         </script>
                     </ol>
                 </div>

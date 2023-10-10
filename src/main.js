@@ -10,9 +10,8 @@ async function call_rust_backend()
 }
 */
 
-export async function load_notes() {
-    let notes = await invoke("load_notes");
-    console.log(notes)
+export async function load_notes(offset) {
+    let notes = await invoke('load_notes', {offset: offset});
 }
 
 
