@@ -11,11 +11,13 @@ async function call_rust_backend()
 */
 
 export async function load_notes(offset) {
-    let notes = await invoke('load_notes', {offset: offset});
+    return await invoke('load_notes', {offset: offset});
 }
 
 
 window.addEventListener("DOMContentLoaded", () => {
+
+    document.addEventListener('touchcancel', () => console.log("touchend"))
 
     document.addEventListener("contextmenu", function (e) {
         e.preventDefault();

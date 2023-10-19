@@ -17,10 +17,20 @@
                             let note_list;
                             document.addEventListener("DOMContentLoaded", async () => {
                                 note_list = await load_notes(100);
+                                console.log(note_list)
+                                for(let i = 0; i < note_list.length; i++)
+                                {
+                                    let li_element = document.createElement("li");
+                                    let a_element = document.createElement("a")
+                                    a_element.innerText = note_list[i].note_name;
+                                    a_element.id = note_list[i].note_name;
+                                    a_element.href = "#" + note_list[i].note_name;
+                                    li_element.id = note_list[i].note_name;
+                                    li_element.appendChild(a_element);
+
+                                    document.getElementsByClassName("notes")[0].appendChild(li_element);
+                                }
                             });
-                            document.getElementsByClassName("notes")[0].append(
-                                "<li><a>{note_list}</a></li>"
-                            )
                         </script>
                     </ol>
                 </div>
@@ -31,7 +41,29 @@
                 </div>
             </div>
             <div class="note-content">
-
+                <script type="module">
+                    import { load_notes } from './main.js';
+                    let note_list = await load_notes(100);
+                    document.addEventListener('click', (ev) => {
+                       if(ev.target.id.includes("Note"))
+                       {
+                           let note_id = ev.target.id;
+                           let note_content_el = document.getElementsByClassName("note-content")[0]
+                           note_list.forEach((note) =>
+                            {
+                                if(note_id === note.note_name)
+                                {
+                                    note_content_el.replaceChildren("");
+                                    let tx_el = document.createElement("textarea");
+                                    tx_el.innerText = note.note_content;
+                                    tx_el.style = "width: 100%; height: 100%"
+                                    note_content_el.appendChild(tx_el);
+                                }
+                            })
+                       }
+                       else return false;
+                    })
+                </script>
             </div>
             <!--<div class="task-selection">
                 <ul class="task-u-list">

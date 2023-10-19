@@ -9,10 +9,11 @@ use rand::Rng;
 use dirs;
 use crate::db::Database;
 use crate::notes::loader::*;
-use crate::notes::loader::load_notes as load_notes_offset;
 use crate::notes::note::*;
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+use tauri::State;
+
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -40,8 +41,7 @@ fn main() {
         .expect("Unable to create parent directories!");
 
     let mut database_ins: Database = Database::new(default_path + "\\data.db");
-
-    let loader = Loader::new();
+    let mut loader: Loader = Loader::new();
 
     database_ins.use_batch(true);
     database_ins.execute(String::from("CREATE TABLE u_settings(id VARCHAR(255) NOT NULL, value VARCHAR(255), PRIMARY KEY (id));").as_str());
@@ -51,6 +51,7 @@ fn main() {
 
     println!("Application started!");
     tauri::Builder::default()
+        .manage(loader)
         .invoke_handler(tauri::generate_handler![
             greet,
             randommessage,
@@ -62,7 +63,9 @@ fn main() {
 }
 
 #[tauri::command]
-fn load_notes(offset: i32) -> String {
-    load_notes_offset(offset, 100);
-    "".to_string()
+fn load_notes(loader: State<Loader>, offset: i32) -> Vec<Note> {
+    let mut list = Vec::new();
+    list.push(Note::new("Note-1".to_string(), "Note-1".to_string()));
+    list.push(Note::new("Note-2".to_string(), "Note-2".to_string()));
+    list
 }
